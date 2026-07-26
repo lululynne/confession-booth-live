@@ -1,4 +1,10 @@
 <!DOCTYPE html>
+<!--
+  告解室 · Confession Booth
+  Copyright (c) 2026 lululynne — https://github.com/lululynne/confession-booth-live
+  MIT License：随便拿去改、去用、去卖，但请保留这段版权声明。
+  首发 2026-07-27，commit 历史公开可查。
+-->
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
@@ -143,6 +149,9 @@
 .backlink{display:block;text-align:center;margin:26px auto 0;color:var(--muted);
   font-size:13px;text-decoration:none;letter-spacing:.06em}
 .backlink:hover{color:var(--veil)}
+.credit{margin-top:18px;text-align:center;color:var(--muted);font-size:11.5px;opacity:.75;letter-spacing:.03em}
+.credit a{color:inherit;text-decoration:none;border-bottom:1px solid currentColor;padding-bottom:1px}
+.credit a:hover{color:var(--veil)}
 /* 广告条：底部，可关闭 */
 .adbar{position:fixed;left:0;right:0;bottom:0;background:#14161f;border-top:1px solid #2c3346;
   padding:11px 44px 11px 18px;display:flex;align-items:center;gap:10px;font-size:13px;z-index:50}
@@ -193,6 +202,10 @@
     <span>猫奴</span><span>打工人</span><span>网购</span><span>健身卡</span>
   </div>
 
+  <p class="credit">
+    by <a href="https://github.com/lululynne" target="_blank" rel="noopener">lululynne</a>
+    · MIT · <a href="https://github.com/lululynne/confession-booth-live" target="_blank" rel="noopener">源码</a>
+  </p>
   <p class="err" id="err"></p>
   <p class="loading" id="loading"></p>
 </div>
@@ -236,6 +249,11 @@
   <footer>
     <p class="amen">Non absolvo</p>
     <a class="backlink" href="#" id="again">← 换一个主题</a>
+  <p class="credit">
+    by <a href="https://github.com/lululynne" target="_blank" rel="noopener">lululynne</a>
+    · MIT · <a href="https://github.com/lululynne/confession-booth-live" target="_blank" rel="noopener">源码</a>
+  </p>
+
   </footer>
 </div>
 

@@ -102,7 +102,8 @@ export default async function handler(req, res) {
           { role: "system", content: SYSTEM_PROMPT },
           { role: "user", content: "主题：" + theme },
         ],
-        temperature: 0.9,
+        // kimi-k3 只接受 temperature=1（2026-07-27 实测：传 0.9 直接 400
+        // invalid temperature: only 1 is allowed for this model）。索性不传，用模型默认。
         max_tokens: 3200,
       }),
     });

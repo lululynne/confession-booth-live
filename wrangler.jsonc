@@ -1,0 +1,30 @@
+{
+  "name": "confession-booth",
+  "main": "src/index.js",
+  "compatibility_date": "2026-07-20",
+
+  // 前端静态文件：public/index.html
+  // Worker 只接管 /api/*，其余交给 assets
+  "assets": {
+    "directory": "./public",
+    "binding": "ASSETS"
+  },
+
+  // 生成结果缓存 + 限流计数
+  "kv_namespaces": [
+    { "binding": "CACHE", "id": "7755a50d10844e4a988af494cf32e39b" }
+  ],
+
+  // 花钱的闸门，改这里就能收紧
+  "vars": {
+    "KIMI_BASE": "https://api.kimi.com/coding/v1",
+    "KIMI_MODEL": "kimi-k3",
+    "CACHE_TTL_SEC": "86400",   // 同一主题缓存 24 小时，第二个人白嫖缓存
+    "IP_LIMIT_PER_HOUR": "5",   // 单 IP 每小时能生成几次
+    "DAILY_BUDGET": "300"       // 全站每天最多生成几次（超了只能玩已缓存的）
+  },
+
+  "observability": { "enabled": true }
+
+  // KIMI_API_KEY 是 secret，不写在这儿：wrangler secret put KIMI_API_KEY
+}

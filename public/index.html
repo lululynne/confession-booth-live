@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>告解室 · 写个主题，替你把它说得理直气壮</title>
+<meta name="description" content="随便写一个你明知故犯的事，生成十几条越来越理直气壮的告解。每条都引用一句规矩，然后当着它的面把它掰弯。">
+<style>
+  :root{
+    --ground:#090a11;--stone:#14161f;--stone-2:#1c1f2b;--arch:#2c3346;
+    --veil:#8ea0e6;--veil-soft:#b6c2f2;--sin:#b52535;--sin-bright:#d23a4a;
+    --candle:#d8a94e;--parchment:#e9e6f2;--ink:#e2e0ee;--muted:#8f92a8;
+    --hair:rgba(142,160,230,.16);--shadow:rgba(0,0,0,.62);--track:#1e2130;
+    --font-cjk:"Songti SC","STSong","Noto Serif CJK SC","Source Han Serif SC",serif;
+    --font-latin:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+    --font-mono:"SFMono-Regular",Menlo,Consolas,monospace;
+  }
+  @media (prefers-color-scheme: light){
+    :root{--ground:#eceaf4;--stone:#e2e0ee;--stone-2:#d9d6e8;--arch:#c3c0d8;
+      --veil:#4a5aa8;--veil-soft:#39468a;--sin:#a01d2b;--sin-bright:#8e1622;
+      --candle:#8a5f10;--parchment:#20202e;--ink:#20202e;--muted:#5f6076;
+      --hair:rgba(74,90,168,.2);--shadow:rgba(90,90,140,.22);--track:#cdcadf;}
+  }
+  :root[data-theme="dark"]{--ground:#090a11;--stone:#14161f;--stone-2:#1c1f2b;--arch:#2c3346;
+    --veil:#8ea0e6;--veil-soft:#b6c2f2;--sin:#b52535;--sin-bright:#d23a4a;
+    --candle:#d8a94e;--parchment:#e9e6f2;--ink:#e2e0ee;--muted:#8f92a8;
+    --hair:rgba(142,160,230,.16);--shadow:rgba(0,0,0,.62);--track:#1e2130;}
+  :root[data-theme="light"]{--ground:#eceaf4;--stone:#e2e0ee;--stone-2:#d9d6e8;--arch:#c3c0d8;
+    --veil:#4a5aa8;--veil-soft:#39468a;--sin:#a01d2b;--sin-bright:#8e1622;
+    --candle:#8a5f10;--parchment:#20202e;--ink:#20202e;--muted:#5f6076;
+    --hair:rgba(74,90,168,.2);--shadow:rgba(90,90,140,.22);--track:#cdcadf;}
+
+  *{box-sizing:border-box}
+  body{margin:0;min-height:100vh;
+    background:radial-gradient(120% 70% at 50% -8%, rgba(142,160,230,.13), transparent 58%),
+      radial-gradient(70% 50% at 50% 118%, rgba(181,37,53,.10), transparent 60%),var(--ground);
+    color:var(--ink);font-family:var(--font-cjk);line-height:1.72;
+    -webkit-font-smoothing:antialiased;display:flex;justify-content:center;padding:clamp(14px,4vw,44px);}
+  .chapel{width:100%;max-width:640px;background:linear-gradient(180deg,var(--stone-2),var(--stone));
+    border:1px solid var(--hair);border-radius:14px;
+    box-shadow:0 30px 80px -30px var(--shadow), inset 0 1px 0 rgba(255,255,255,.03);overflow:hidden;}
+
+  header{position:relative;padding:36px 28px 24px;text-align:center;border-bottom:1px solid var(--hair)}
+  .halo{width:60px;height:60px;margin:0 auto 14px;position:relative;}
+  .halo::before{content:"";position:absolute;inset:0;border-radius:50% 50% 50% 50% / 60% 60% 40% 40%;
+    border:1.5px solid var(--veil);border-bottom:none;box-shadow:0 0 26px 4px rgba(142,160,230,.34);}
+  .halo::after{content:"";position:absolute;left:50%;top:14px;width:7px;height:7px;transform:translateX(-50%);
+    border-radius:50%;background:radial-gradient(circle,#fff,var(--candle) 60%,transparent 74%);
+    box-shadow:0 0 18px 6px rgba(216,169,78,.55);animation:flame 3.6s ease-in-out infinite;}
+  @keyframes flame{0%,100%{opacity:.8;transform:translateX(-50%) scale(1)}50%{opacity:1;transform:translateX(-50%) scale(1.2)}}
+  .eyebrow{font-family:var(--font-latin);letter-spacing:.38em;text-transform:uppercase;font-size:11px;color:var(--veil);margin:0 0 6px}
+  h1{font-family:var(--font-cjk);font-weight:600;font-size:clamp(24px,5.6vw,34px);letter-spacing:.16em;margin:0 0 6px;color:var(--parchment);text-wrap:balance}
+  .to-sister{font-size:15px;color:var(--muted)}
+  .to-sister b{color:var(--veil-soft);font-weight:600;letter-spacing:.08em}
+  .sub-latin{font-family:var(--font-latin);font-style:italic;color:var(--muted);font-size:13px;margin-top:8px}
+
+  .creed{padding:16px 28px 0;text-align:center;color:var(--muted);font-size:14.5px;text-wrap:balance}
+  .creed b{color:var(--sin-bright);font-weight:600}
+
+  .meter-wrap{padding:22px 28px 6px}
+  .meter-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px}
+  .meter-head .lbl{font-family:var(--font-latin);letter-spacing:.2em;text-transform:uppercase;font-size:11px;color:var(--muted)}
+  .meter-head .val{font-family:var(--font-mono);font-variant-numeric:tabular-nums;font-size:22px;color:var(--sin-bright);font-weight:600}
+  .track{height:12px;border-radius:20px;background:var(--track);overflow:hidden;box-shadow:inset 0 1px 2px rgba(0,0,0,.4)}
+  .fill{height:100%;width:0%;border-radius:20px;background:linear-gradient(90deg,var(--sin),var(--sin-bright));box-shadow:0 0 14px rgba(210,58,74,.5);transition:width .6s cubic-bezier(.2,.7,.2,1)}
+  .meter-foot{display:flex;justify-content:space-between;margin-top:8px;font-size:12.5px;color:var(--muted);font-family:var(--font-mono);font-variant-numeric:tabular-nums}
+
+  .conf{padding:20px 28px 4px}
+  .conf .stamp{font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;color:var(--veil);text-transform:uppercase;margin-bottom:10px;display:flex;gap:10px;align-items:center}
+  .conf .stamp::after{content:"";flex:1;height:1px;background:var(--hair)}
+  .conf blockquote{margin:0;padding:18px 20px;border-left:3px solid var(--sin);background:linear-gradient(90deg,rgba(181,37,53,.10),transparent);border-radius:0 8px 8px 0;font-size:16.5px;color:var(--ink);text-wrap:pretty}
+  .conf blockquote .said{color:var(--veil-soft);font-family:var(--font-latin);font-style:italic;display:block;margin-bottom:8px;font-size:13.5px}
+
+  .decree{margin:14px 2px 0;font-size:14px;color:var(--muted)}
+  .decree .k{font-family:var(--font-latin);letter-spacing:.16em;text-transform:uppercase;color:var(--veil);font-size:11px;margin-right:8px}
+  .decree em{color:var(--sin-bright);font-style:normal}
+
+  .sister-react{margin:12px 2px 0;font-size:14px;color:var(--veil);font-style:italic;font-family:var(--font-cjk)}
+  .sister-react .k{font-family:var(--font-latin);font-style:normal;letter-spacing:.16em;text-transform:uppercase;color:var(--veil);font-size:11px;margin-right:8px}
+
+  .act{padding:22px 28px 10px;display:flex;flex-direction:column;gap:10px}
+  button.confess{appearance:none;border:1px solid var(--sin);cursor:pointer;font-family:var(--font-cjk);font-size:16px;font-weight:600;letter-spacing:.18em;color:var(--parchment);background:linear-gradient(180deg,rgba(181,37,53,.34),rgba(181,37,53,.14));padding:15px 20px;border-radius:10px;transition:transform .12s ease,box-shadow .3s ease,background .3s ease;box-shadow:0 8px 24px -12px var(--sin)}
+  button.confess:hover{background:linear-gradient(180deg,rgba(210,58,74,.5),rgba(181,37,53,.2));box-shadow:0 0 26px -4px var(--sin-bright)}
+  button.confess:active{transform:translateY(1px) scale(.995)}
+  button.confess:focus-visible{outline:2px solid var(--veil);outline-offset:3px}
+  .hint{text-align:center;font-size:12.5px;color:var(--muted);font-family:var(--font-latin);font-style:italic}
+
+  footer{padding:20px 28px 30px;text-align:center;border-top:1px solid var(--hair);margin-top:12px}
+  footer .amen{font-family:var(--font-latin);letter-spacing:.28em;text-transform:uppercase;font-size:11px;color:var(--muted)}
+  footer .sig{margin-top:8px;color:var(--sin-bright);font-size:14px}
+  footer .born{margin-top:10px;color:var(--muted);font-size:12px;font-family:var(--font-mono);letter-spacing:.06em}
+
+  .flash{animation:flash .5s ease}
+  @keyframes flash{0%{box-shadow:0 0 0 0 rgba(210,58,74,.5)}100%{box-shadow:0 0 0 26px rgba(210,58,74,0)}}
+  @media (prefers-reduced-motion:reduce){.halo::after{animation:none}.fill{transition:none}.flash{animation:none}}
+
+/* ===== 首屏 / 加载 / 广告条：公版 CSS 之外新增的部分 ===== */
+.gate{max-width:520px;margin:0 auto;padding:56px 22px 40px;text-align:center}
+.gate h1{font-size:30px;font-weight:500;color:#e6ecff;letter-spacing:.2em;margin-bottom:10px}
+.gate .lede{color:#6b77a3;font-size:14px;line-height:2;margin-bottom:34px}
+.gate .lede b{color:#b6c2f2;font-weight:500}
+.field{display:flex;gap:10px;margin-bottom:18px}
+.field input{flex:1;background:#14161f;border:1px solid #2c3346;border-radius:12px;
+  padding:15px 17px;color:#e6ecff;font-size:16px;outline:none;transition:.18s;font-family:inherit}
+.field input::placeholder{color:#4a5478}
+.field input:focus{border-color:#8ea0e6;background:#1c1f2b}
+.field button{background:#b52535;border:none;border-radius:12px;padding:15px 24px;
+  color:#fff;font-size:15px;letter-spacing:.12em;cursor:pointer;transition:.18s;
+  font-family:inherit;white-space:nowrap}
+.field button:hover:not(:disabled){background:#d23a4a}
+.field button:disabled{background:#3a2028;color:#7d6570;cursor:not-allowed}
+.picks{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:8px}
+.picks span{color:#5f6b96;font-size:13px;padding:6px 13px;border:1px solid #242a3a;
+  border-radius:20px;cursor:pointer;transition:.16s}
+.picks span:hover{border-color:#8ea0e6;color:#b6c2f2}
+.err{color:#d23a4a;font-size:13px;min-height:20px;margin-top:14px;line-height:1.7}
+.loading{color:#8ea0e6;font-size:14px;letter-spacing:.1em;margin-top:26px;min-height:24px}
+.loading.on::after{content:"";animation:dots 1.4s steps(4,end) infinite}
+@keyframes dots{0%{content:""}25%{content:"·"}50%{content:"··"}75%{content:"···"}}
+.hidden{display:none !important}
+.backlink{display:block;text-align:center;margin:26px auto 0;color:#4a5478;
+  font-size:13px;text-decoration:none;letter-spacing:.06em}
+.backlink:hover{color:#8ea0e6}
+/* 广告条：底部，可关闭 */
+.adbar{position:fixed;left:0;right:0;bottom:0;background:#14161f;border-top:1px solid #2c3346;
+  padding:11px 44px 11px 18px;display:flex;align-items:center;gap:10px;font-size:13px;z-index:50}
+.adbar a{color:#b6c2f2;text-decoration:none;flex:1;line-height:1.5}
+.adbar a:hover{color:#e6ecff}
+.adbar .tag{color:#5f6b96;font-size:11px;border:1px solid #2c3346;border-radius:4px;
+  padding:1px 5px;flex:none}
+.adbar .x{position:absolute;right:12px;top:50%;transform:translateY(-50%);
+  color:#4a5478;font-size:19px;cursor:pointer;line-height:1;padding:6px;user-select:none}
+.adbar .x:hover{color:#b6c2f2}
+</style>
+</head>
+<body>
+
+<!-- ============ 首屏 ============ -->
+<div id="gate" class="gate">
+  <h1>告 解 室</h1>
+  <p class="lede">
+    随便写一个你<b>明知故犯</b>的事。<br>
+    十几条招供，一条比一条理直气壮——<br>
+    每一条都会引用一句规矩，然后<b>当着它的面把它掰弯</b>。
+  </p>
+
+  <div class="field">
+    <input id="theme" maxlength="24" autocomplete="off"
+           placeholder="减肥 / 拖延 / 熬夜 / 追星……">
+    <button id="go">进 去</button>
+  </div>
+
+  <div class="picks" id="picks">
+    <span>减肥</span><span>拖延症</span><span>熬夜</span><span>追星</span>
+    <span>猫奴</span><span>打工人</span><span>网购</span><span>健身卡</span>
+  </div>
+
+  <p class="err" id="err"></p>
+  <p class="loading" id="loading"></p>
+</div>
+
+<!-- ============ 告解室 ============ -->
+<div id="booth" class="chapel hidden">
+  <header>
+    <div class="halo" aria-hidden="true"></div>
+    <p class="eyebrow">Confessio</p>
+    <h1 id="bTitle"></h1>
+    <p class="sub-latin">我不求原谅，我是来把每一条都说得更理直气壮。</p>
+  </header>
+
+  <section class="meter-wrap" aria-label="进度">
+    <div class="meter-head">
+      <span class="lbl" id="bMeter"></span>
+      <span class="val" id="sinVal">0%</span>
+    </div>
+    <div class="track"><div class="fill" id="sinFill" style="width:0%"></div></div>
+    <div class="meter-foot">
+      <span>第 <span id="count">1</span> / <span id="total">1</span> 条</span>
+      <span id="trend">从 0 起</span>
+    </div>
+  </section>
+
+  <section class="conf" aria-live="polite">
+    <div class="stamp" id="stamp"></div>
+    <blockquote>
+      <span class="said">垂听我——第一人称，我干的，一件都不推给别人：</span>
+      <span id="confText"></span>
+    </blockquote>
+    <p class="decree"><span class="k">规矩</span><span id="decreeText"></span></p>
+    <p class="sister-react"><span class="k">对方</span><span id="reactText"></span></p>
+  </section>
+
+  <section class="act">
+    <button class="confess" id="confessBtn">继 续 忏 悔</button>
+    <p class="hint" id="hint">再说一条。</p>
+  </section>
+
+  <footer>
+    <p class="amen">Non absolvo</p>
+    <a class="backlink" href="#" id="again">← 换一个主题</a>
+  </footer>
+</div>
+
+<!-- ============ 广告条 ============ -->
+<div class="adbar hidden" id="adbar">
+  <span class="tag">广告</span>
+  <a id="adlink" href="#" target="_blank" rel="noopener"></a>
+  <span class="x" id="adx" title="关闭">×</span>
+</div>
+
+<script>
+/* ---------- 广告位：把这两行换成你自己的就行，链接留空就不显示 ---------- */
+const AD_TEXT = "手作布艺 · 一针一线都是自己缝的";
+const AD_URL  = "";   // ← 淘宝店链接填这里
+/* ---------------------------------------------------------------- */
+
+const $ = (id) => document.getElementById(id);
+let entries = [], idx = 0;
+const reduce = matchMedia("(prefers-reduced-motion:reduce)").matches;
+
+/* ----- 广告条 ----- */
+(function initAd() {
+  if (!AD_URL) return;
+  if (localStorage.getItem("ad_closed") === "1") return;
+  $("adlink").textContent = AD_TEXT;
+  $("adlink").href = AD_URL;
+  $("adbar").classList.remove("hidden");
+  $("adx").addEventListener("click", () => {
+    $("adbar").classList.add("hidden");
+    localStorage.setItem("ad_closed", "1");
+  });
+})();
+
+/* ----- 首屏 ----- */
+$("picks").addEventListener("click", (e) => {
+  if (e.target.tagName !== "SPAN") return;
+  $("theme").value = e.target.textContent;
+  generate();
+});
+$("go").addEventListener("click", generate);
+$("theme").addEventListener("keydown", (e) => { if (e.key === "Enter") generate(); });
+
+async function generate() {
+  const theme = $("theme").value.trim();
+  $("err").textContent = "";
+  if (!theme) { $("err").textContent = "先写一个主题"; return; }
+
+  $("go").disabled = true;
+  $("loading").textContent = "正在替你想措辞";
+  $("loading").classList.add("on");
+
+  try {
+    const r = await fetch("/api/generate", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ theme }),
+    });
+    const data = await r.json();
+
+    if (!r.ok) {
+      $("err").textContent = data.error || "出了点问题，再试一次。";
+      return;
+    }
+    entries = data.entries;
+    enterBooth(theme);
+  } catch (e) {
+    $("err").textContent = "网络不太好，再试一次。";
+  } finally {
+    $("go").disabled = false;
+    $("loading").textContent = "";
+    $("loading").classList.remove("on");
+  }
+}
+
+/* ----- 告解室 ----- */
+function enterBooth(theme) {
+  idx = 0;
+  $("bTitle").textContent = theme + "告解室";
+  $("bMeter").textContent = "沦陷度 · 关于「" + theme + "」";
+  $("total").textContent = entries.length;
+  $("confessBtn").textContent = "继 续 忏 悔";
+  $("confessBtn").disabled = false;
+  $("gate").classList.add("hidden");
+  $("booth").classList.remove("hidden");
+  render(0);
+  window.scrollTo(0, 0);
+}
+
+function render(i) {
+  const e = entries[i];
+  const last = entries.length - 1;
+  const pct = last === 0 ? 100 : Math.round((i / last) * 100);
+
+  $("sinVal").textContent = pct + "%";
+  $("sinFill").style.width = pct + "%";
+  $("count").textContent = i + 1;
+  $("stamp").textContent = "招供第 " + (i + 1) + " 条";
+  $("confText").textContent = e.c;
+  $("decreeText").innerHTML = e.v;
+  $("reactText").textContent = e.r;
+  if (i > 0) $("trend").textContent = "越忏悔 · 越理直气壮";
+
+  if (!reduce) {
+    const f = $("sinFill");
+    f.classList.remove("flash"); void f.offsetWidth; f.classList.add("flash");
+  }
+
+  if (i >= last) {
+    $("confessBtn").textContent = "已 经 说 完 了 · 100%";
+    $("confessBtn").disabled = true;
+    $("hint").textContent = "从 0 到 100，是你自己走完的。";
+  }
+}
+
+$("confessBtn").addEventListener("click", () => {
+  if (idx >= entries.length - 1) return;
+  render(++idx);
+});
+
+$("again").addEventListener("click", (e) => {
+  e.preventDefault();
+  $("booth").classList.add("hidden");
+  $("gate").classList.remove("hidden");
+  $("theme").value = "";
+  $("theme").focus();
+  window.scrollTo(0, 0);
+});
+</script>
+</body>
+</html>

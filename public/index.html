@@ -106,7 +106,12 @@
   border-radius:14px;box-shadow:0 30px 80px -30px rgba(0,0,0,.7);}
 .gate h1{font-size:30px;font-weight:500;color:#f2f4ff;letter-spacing:.2em;margin-bottom:10px;
   text-shadow:0 0 22px rgba(142,160,230,.45),0 2px 6px rgba(0,0,0,.6);}
-.gate .lede{color:#6b77a3;font-size:14px;line-height:2;margin-bottom:34px}
+.gate .lede{color:#8f9ac4;font-size:15px;line-height:2;margin-bottom:20px}
+.gate .eg{margin:0 auto 20px;max-width:400px;padding:16px 18px;text-align:left;
+  background:rgba(142,160,230,.06);border-left:2px solid rgba(181,37,53,.55);
+  border-radius:0 8px 8px 0;color:#b6c2f2;font-size:14px;line-height:1.9;font-style:italic}
+.gate .eg .rule{color:#6b77a3;font-style:normal}
+.gate .lede-2{color:#6b77a3;font-size:14px;letter-spacing:.04em;margin-bottom:30px}
 .gate .lede b{color:#b6c2f2;font-weight:500}
 .field{display:flex;gap:10px;margin-bottom:18px}
 .field input{flex:1;background:#14161f;border:1px solid #2c3346;border-radius:12px;
@@ -148,10 +153,15 @@
 <div id="gate" class="gate">
   <h1>告 解 室</h1>
   <p class="lede">
-    随便写一个你<b>明知故犯</b>的事。<br>
-    十几条招供，一条比一条理直气壮——<br>
-    每一条都会引用一句规矩，然后<b>当着它的面把它掰弯</b>。
+    随便写一个你<b>明知故犯</b>的事。
   </p>
+
+  <p class="eg">
+    <span class="rule">「教练说，晚上八点以后不能吃。」</span><br>
+    他在杭州，我按乌鲁木齐时间吃，完全合规。
+  </p>
+
+  <p class="lede-2">十几条，一条比一条理直气壮。</p>
 
   <div class="field">
     <input id="theme" maxlength="24" autocomplete="off"

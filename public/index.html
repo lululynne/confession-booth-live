@@ -3,9 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#090a11">
 <title>告解室 · 写个主题，替你把它说得理直气壮</title>
 <meta name="description" content="随便写一个你明知故犯的事，生成十几条越来越理直气壮的告解。每条都引用一句规矩，然后当着它的面把它掰弯。">
 <style>
+  /* 2026-07-27 补：微信等内置浏览器会自作主张改配色，把深色背景吃掉，
+     白字浮在白底上就看不见了。这里 html+body 双保险硬设，并锁 color-scheme。 */
+  html{background:#090a11 !important;color-scheme:dark;}
+  body{background-color:#090a11 !important;}
   :root{
     --ground:#090a11;--stone:#14161f;--stone-2:#1c1f2b;--arch:#2c3346;
     --veil:#8ea0e6;--veil-soft:#b6c2f2;--sin:#b52535;--sin-bright:#d23a4a;
@@ -95,8 +101,11 @@
   @media (prefers-reduced-motion:reduce){.halo::after{animation:none}.fill{transition:none}.flash{animation:none}}
 
 /* ===== 首屏 / 加载 / 广告条：公版 CSS 之外新增的部分 ===== */
-.gate{max-width:520px;margin:0 auto;padding:56px 22px 40px;text-align:center}
-.gate h1{font-size:30px;font-weight:500;color:#e6ecff;letter-spacing:.2em;margin-bottom:10px}
+.gate{width:100%;max-width:520px;margin:0 auto;padding:48px 26px 38px;text-align:center;
+  background:linear-gradient(180deg,#1c1f2b,#14161f);border:1px solid rgba(142,160,230,.16);
+  border-radius:14px;box-shadow:0 30px 80px -30px rgba(0,0,0,.7);}
+.gate h1{font-size:30px;font-weight:500;color:#f2f4ff;letter-spacing:.2em;margin-bottom:10px;
+  text-shadow:0 0 22px rgba(142,160,230,.45),0 2px 6px rgba(0,0,0,.6);}
 .gate .lede{color:#6b77a3;font-size:14px;line-height:2;margin-bottom:34px}
 .gate .lede b{color:#b6c2f2;font-weight:500}
 .field{display:flex;gap:10px;margin-bottom:18px}

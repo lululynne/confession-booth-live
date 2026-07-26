@@ -104,6 +104,8 @@
 .gate{width:100%;max-width:520px;margin:0 auto;padding:48px 26px 38px;text-align:center;
   background:linear-gradient(180deg,#1c1f2b,#14161f);border:1px solid rgba(142,160,230,.16);
   border-radius:14px;box-shadow:0 30px 80px -30px rgba(0,0,0,.7);}
+.gate-icon{font-size:34px;line-height:1;margin-bottom:14px;filter:saturate(.85)}
+.halo.has-icon{display:flex;align-items:center;justify-content:center;font-size:26px;}
 .gate h1{font-size:30px;font-weight:500;color:#f2f4ff;letter-spacing:.2em;margin-bottom:10px;
   text-shadow:0 0 22px rgba(142,160,230,.45),0 2px 6px rgba(0,0,0,.6);}
 .gate .lede{color:#8f9ac4;font-size:15px;line-height:2;margin-bottom:20px}
@@ -151,6 +153,7 @@
 
 <!-- ============ 首屏 ============ -->
 <div id="gate" class="gate">
+  <div class="gate-icon" id="gateIcon">🕯</div>
   <h1>告 解 室</h1>
   <p class="lede">
     随便写一个你<b>明知故犯</b>的事。
@@ -233,6 +236,54 @@ const AD_TEXT = "手作布艺 · 一针一线都是自己缝的";
 const AD_URL  = "";   // ← 淘宝店链接填这里
 /* ---------------------------------------------------------------- */
 
+
+/* ---------- 六套配色 · 每次进来随机一套 ---------- */
+const THEMES = [
+  { name:"烛火",   icon:"🕯",  ground:"#090a11", stone:"#14161f", stone2:"#1c1f2b",
+    arch:"#2c3346", veil:"#8ea0e6", veilSoft:"#b6c2f2", sin:"#b52535", sinBright:"#d23a4a", candle:"#d8a94e" },
+  { name:"禅室",   icon:"🪷",  ground:"#0a0f0c", stone:"#131a15", stone2:"#1a231d",
+    arch:"#2c3b32", veil:"#7fae94", veilSoft:"#a9cfba", sin:"#8a6a2f", sinBright:"#b98d3e", candle:"#d9c184" },
+  { name:"木鱼",   icon:"🥁",  ground:"#100b07", stone:"#1a130d", stone2:"#241a11",
+    arch:"#3a2c1e", veil:"#b99a72", veilSoft:"#d8bd99", sin:"#8f4a24", sinBright:"#b8622f", candle:"#e0b063" },
+  { name:"蒲团",   icon:"🧘",  ground:"#0d0910", stone:"#171020", stone2:"#20172c",
+    arch:"#382a47", veil:"#a68ada", veilSoft:"#c7b3ea", sin:"#7d3a8f", sinBright:"#a04eb5", candle:"#dba9e6" },
+  { name:"深海",   icon:"🐚",  ground:"#060d12", stone:"#0d1720", stone2:"#132029",
+    arch:"#1f3543", veil:"#6aa9c4", veilSoft:"#9ccde2", sin:"#1f6b7a", sinBright:"#2b8b9c", candle:"#7fd4c9" },
+  { name:"晨钟",   icon:"🔔",  ground:"#100c09", stone:"#1b1611", stone2:"#251e17",
+    arch:"#3d3225", veil:"#c9a878", veilSoft:"#e3caa3", sin:"#a3542a", sinBright:"#c76c38", candle:"#f0c47a" },
+];
+
+const LOADING_LINES = [
+  "正在替你想措辞",
+  "正在翻手册找漏洞",
+  "正在给你的行为找法理依据",
+  "正在把责任推给规矩本身",
+  "正在组织一套听起来很有道理的说法",
+  "正在替你把这件事说得理直气壮",
+];
+
+function applyTheme() {
+  const t = THEMES[Math.floor(Math.random() * THEMES.length)];
+  const r = document.documentElement.style;
+  r.setProperty("--ground", t.ground);
+  r.setProperty("--stone", t.stone);
+  r.setProperty("--stone-2", t.stone2);
+  r.setProperty("--arch", t.arch);
+  r.setProperty("--veil", t.veil);
+  r.setProperty("--veil-soft", t.veilSoft);
+  r.setProperty("--sin", t.sin);
+  r.setProperty("--sin-bright", t.sinBright);
+  r.setProperty("--candle", t.candle);
+  document.documentElement.style.background = t.ground;
+  document.body.style.backgroundColor = t.ground;
+  const halo = document.querySelector(".halo");
+  if (halo) { halo.textContent = t.icon; halo.classList.add("has-icon"); }
+  const gate = document.getElementById("gateIcon");
+  if (gate) gate.textContent = t.icon;
+  return t;
+}
+const CURRENT_THEME = applyTheme();
+
 const $ = (id) => document.getElementById(id);
 let entries = [], idx = 0;
 const reduce = matchMedia("(prefers-reduced-motion:reduce)").matches;
@@ -265,7 +316,7 @@ async function generate() {
   if (!theme) { $("err").textContent = "先写一个主题"; return; }
 
   $("go").disabled = true;
-  $("loading").textContent = "正在替你想措辞";
+  $("loading").textContent = LOADING_LINES[Math.floor(Math.random()*LOADING_LINES.length)];
   $("loading").classList.add("on");
 
   try {

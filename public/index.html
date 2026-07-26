@@ -3,15 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="color-scheme" content="dark">
-<meta name="theme-color" content="#090a11">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#faf7f2">
 <title>告解室 · 写个主题，替你把它说得理直气壮</title>
 <meta name="description" content="随便写一个你明知故犯的事，生成十几条越来越理直气壮的告解。每条都引用一句规矩，然后当着它的面把它掰弯。">
 <style>
   /* 2026-07-27 补：微信等内置浏览器会自作主张改配色，把深色背景吃掉，
      白字浮在白底上就看不见了。这里 html+body 双保险硬设，并锁 color-scheme。 */
-  html{background:#090a11 !important;color-scheme:dark;}
-  body{background-color:#090a11 !important;}
+  html{background:#faf7f2;color-scheme:light;}
+  body{background-color:var(--ground);}
   :root{
     --ground:#090a11;--stone:#14161f;--stone-2:#1c1f2b;--arch:#2c3346;
     --veil:#8ea0e6;--veil-soft:#b6c2f2;--sin:#b52535;--sin-bright:#d23a4a;
@@ -43,8 +43,8 @@
     color:var(--ink);font-family:var(--font-cjk);line-height:1.72;
     -webkit-font-smoothing:antialiased;display:flex;justify-content:center;padding:clamp(14px,4vw,44px);}
   .chapel{width:100%;max-width:640px;background:linear-gradient(180deg,var(--stone-2),var(--stone));
-    border:1px solid var(--hair);border-radius:14px;
-    box-shadow:0 30px 80px -30px var(--shadow), inset 0 1px 0 rgba(255,255,255,.03);overflow:hidden;}
+    border:1px solid var(--hair);border-radius:24px;
+    box-shadow:0 18px 50px -22px rgba(90,80,70,.2);overflow:hidden;}
 
   header{position:relative;padding:36px 28px 24px;text-align:center;border-bottom:1px solid var(--hair)}
   .halo{width:60px;height:60px;margin:0 auto 14px;position:relative;}
@@ -101,42 +101,43 @@
   @media (prefers-reduced-motion:reduce){.halo::after{animation:none}.fill{transition:none}.flash{animation:none}}
 
 /* ===== 首屏 / 加载 / 广告条：公版 CSS 之外新增的部分 ===== */
-.gate{width:100%;max-width:520px;margin:0 auto;padding:48px 26px 38px;text-align:center;
-  background:linear-gradient(180deg,#1c1f2b,#14161f);border:1px solid rgba(142,160,230,.16);
-  border-radius:14px;box-shadow:0 30px 80px -30px rgba(0,0,0,.7);}
-.gate-icon{font-size:34px;line-height:1;margin-bottom:14px;filter:saturate(.85)}
-.halo.has-icon{display:flex;align-items:center;justify-content:center;font-size:26px;}
-.gate h1{font-size:30px;font-weight:500;color:#f2f4ff;letter-spacing:.2em;margin-bottom:10px;
-  text-shadow:0 0 22px rgba(142,160,230,.45),0 2px 6px rgba(0,0,0,.6);}
-.gate .lede{color:#8f9ac4;font-size:15px;line-height:2;margin-bottom:20px}
-.gate .eg{margin:0 auto 20px;max-width:400px;padding:16px 18px;text-align:left;
-  background:rgba(142,160,230,.06);border-left:2px solid rgba(181,37,53,.55);
-  border-radius:0 8px 8px 0;color:#b6c2f2;font-size:14px;line-height:1.9;font-style:italic}
-.gate .eg .rule{color:#6b77a3;font-style:normal}
-.gate .lede-2{color:#6b77a3;font-size:14px;letter-spacing:.04em;margin-bottom:30px}
+.gate{width:100%;max-width:520px;margin:0 auto;padding:52px 30px 42px;text-align:center;
+  background:var(--stone);border:1px solid var(--arch);
+  border-radius:24px;box-shadow:0 18px 50px -22px rgba(90,80,70,.22);}
+.gate-icon{width:48px;height:48px;margin:0 auto 18px;color:var(--veil);opacity:1}
+.gate-icon svg{width:100%;height:100%;display:block}
+.halo.has-icon{display:flex;align-items:center;justify-content:center;color:var(--veil);opacity:.85}
+.halo.has-icon svg{width:34px;height:34px}
+.gate h1{font-size:28px;font-weight:400;color:var(--ink);letter-spacing:.24em;margin-bottom:12px;}
+.gate .lede{color:var(--muted);font-size:15px;line-height:2;margin-bottom:20px}
+.gate .eg{margin:0 auto 22px;max-width:400px;padding:18px 20px;text-align:left;
+  background:var(--stone-2);border-left:3px solid var(--sin);
+  border-radius:4px 14px 14px 4px;color:var(--ink);font-size:14px;line-height:1.9;font-style:italic}
+.gate .eg .rule{color:var(--muted);font-style:normal}
+.gate .lede-2{color:var(--muted);font-size:14px;letter-spacing:.04em;margin-bottom:30px}
 .gate .lede b{color:#b6c2f2;font-weight:500}
 .field{display:flex;gap:10px;margin-bottom:18px}
-.field input{flex:1;background:#14161f;border:1px solid #2c3346;border-radius:12px;
-  padding:15px 17px;color:#e6ecff;font-size:16px;outline:none;transition:.18s;font-family:inherit}
-.field input::placeholder{color:#4a5478}
-.field input:focus{border-color:#8ea0e6;background:#1c1f2b}
-.field button{background:#b52535;border:none;border-radius:12px;padding:15px 24px;
+.field input{flex:1;background:var(--stone-2);border:1px solid var(--arch);border-radius:14px;
+  padding:15px 17px;color:var(--ink);font-size:16px;outline:none;transition:.18s;font-family:inherit}
+.field input::placeholder{color:var(--muted);opacity:.6}
+.field input:focus{border-color:var(--veil);background:var(--stone)}
+.field button{background:var(--sin);border:none;border-radius:14px;padding:15px 24px;
   color:#fff;font-size:15px;letter-spacing:.12em;cursor:pointer;transition:.18s;
   font-family:inherit;white-space:nowrap}
-.field button:hover:not(:disabled){background:#d23a4a}
-.field button:disabled{background:#3a2028;color:#7d6570;cursor:not-allowed}
+.field button:hover:not(:disabled){background:var(--sin-bright)}
+.field button:disabled{background:var(--arch);color:var(--muted);cursor:not-allowed}
 .picks{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:8px}
-.picks span{color:#5f6b96;font-size:13px;padding:6px 13px;border:1px solid #242a3a;
-  border-radius:20px;cursor:pointer;transition:.16s}
-.picks span:hover{border-color:#8ea0e6;color:#b6c2f2}
-.err{color:#d23a4a;font-size:13px;min-height:20px;margin-top:14px;line-height:1.7}
-.loading{color:#8ea0e6;font-size:14px;letter-spacing:.1em;margin-top:26px;min-height:24px}
+.picks span{color:var(--muted);font-size:13px;padding:7px 15px;border:1px solid var(--arch);
+  border-radius:20px;background:var(--stone-2);cursor:pointer;transition:.16s}
+.picks span:hover{border-color:var(--veil);color:var(--ink)}
+.err{color:var(--sin-bright);font-size:13px;min-height:20px;margin-top:14px;line-height:1.7}
+.loading{color:var(--veil);font-size:14px;letter-spacing:.1em;margin-top:26px;min-height:24px}
 .loading.on::after{content:"";animation:dots 1.4s steps(4,end) infinite}
 @keyframes dots{0%{content:""}25%{content:"·"}50%{content:"··"}75%{content:"···"}}
 .hidden{display:none !important}
-.backlink{display:block;text-align:center;margin:26px auto 0;color:#4a5478;
+.backlink{display:block;text-align:center;margin:26px auto 0;color:var(--muted);
   font-size:13px;text-decoration:none;letter-spacing:.06em}
-.backlink:hover{color:#8ea0e6}
+.backlink:hover{color:var(--veil)}
 /* 广告条：底部，可关闭 */
 .adbar{position:fixed;left:0;right:0;bottom:0;background:#14161f;border-top:1px solid #2c3346;
   padding:11px 44px 11px 18px;display:flex;align-items:center;gap:10px;font-size:13px;z-index:50}
@@ -153,7 +154,7 @@
 
 <!-- ============ 首屏 ============ -->
 <div id="gate" class="gate">
-  <div class="gate-icon" id="gateIcon">🕯</div>
+  <div class="gate-icon" id="gateIcon"></div>
   <h1>告 解 室</h1>
   <p class="lede">
     随便写一个你<b>明知故犯</b>的事。
@@ -237,20 +238,42 @@ const AD_URL  = "";   // ← 淘宝店链接填这里
 /* ---------------------------------------------------------------- */
 
 
+
+/* ---------- 八个手绘图标 · 线条随主题色走 ---------- */
+const ICONS = {
+  hands: '<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M24 41V14c0-2.2-1.3-4-3-4s-3 1.8-3 4v10"/><path d="M24 41V14c0-2.2 1.3-4 3-4s3 1.8 3 4v10"/><path d="M18 24c-2.4.6-4 2.6-4 5.2V34c0 3.9 4.5 7 10 7s10-3.1 10-7v-4.8c0-2.6-1.6-4.6-4-5.2"/><path d="M14 29c-1.6-1.2-3.4-1.4-4.6-.4-1.3 1.1-1 3.1.6 4.7l3.2 3"/><path d="M34 29c1.6-1.2 3.4-1.4 4.6-.4 1.3 1.1 1 3.1-.6 4.7l-3.2 3"/></svg>',
+
+  lotus: '<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M24 34c0-6 0-12 0-18 3.5 3.5 5 8 5 12s-2 6-5 6z"/><path d="M24 34c0-6 0-12 0-18-3.5 3.5-5 8-5 12s2 6 5 6z"/><path d="M24 34c-4.4-3-9-4.4-13-4 .6 4.2 4.4 7 8.6 7.4"/><path d="M24 34c4.4-3 9-4.4 13-4-.6 4.2-4.4 7-8.6 7.4"/><path d="M12 37.4c3.2 2.6 7.4 4 12 4s8.8-1.4 12-4"/></svg>',
+
+  woodfish: '<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 28c0-7.2 6.7-13 15-13s15 5.8 15 13-6.7 13-15 13S9 35.2 9 28z"/><path d="M16 30c3-2.2 13-2.2 16 0"/><path d="M12 22c2.5-3 6.6-5 11-5"/><path d="M34 12l6-5"/><path d="M39 6.5l3 2.5-2 3"/></svg>',
+
+  cushion: '<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="24" cy="30" rx="17" ry="8"/><path d="M7 30v3.5c0 4.4 7.6 8 17 8s17-3.6 17-8V30"/><path d="M12 27.5c4 2 20 2 24 0"/><path d="M24 22.4V25"/></svg>',
+
+  church: '<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M24 5v7"/><path d="M20.5 8h7"/><path d="M24 12l11 9v20H13V21z"/><path d="M13 41H7V26l6-5"/><path d="M35 41h6V26l-6-5"/><path d="M24 41v-8a3.5 3.5 0 0 1 7 0v8"/><circle cx="24" cy="25" r="2.6"/></svg>',
+
+  dove: '<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 30c5-1 8.5-3.5 11-7 2.8-3.9 6.4-6 10.6-6 5.6 0 9.4 3.4 9.4 8 0 1.6-.5 3-1.4 4.2"/><path d="M35.6 29.2c-2 2.6-5.4 4.3-9.6 4.3-2 0-3.6-.3-5-.8"/><path d="M21 32.7c-.6 3.4-3 6-6.4 7"/><path d="M27 17c1.6-2.6 4-4.4 7-5-.4 2.6-1.6 4.7-3.4 6"/><circle cx="33" cy="21.6" r=".9" fill="currentColor" stroke="none"/><path d="M38 22.6l4-1.4-3.4-1.6"/></svg>',
+
+  candle: '<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M24 6c3.4 3.6 5 6.4 5 8.6 0 2.8-2.2 5-5 5s-5-2.2-5-5c0-2.2 1.6-5 5-8.6z"/><path d="M17 23h14v18H17z"/><path d="M14 41h20"/><path d="M24 19.6V23"/></svg>',
+
+  nun: '<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M24 7c-4.4 0-7.5 3-7.5 7.2 0 1.6.4 3 1 4.1"/><path d="M24 7c4.4 0 7.5 3 7.5 7.2 0 1.6-.4 3-1 4.1"/><path d="M15 13.5c-2.6 1-4.3 3-4.3 5.4 0 2 1.2 3.6 3 4.3"/><path d="M33 13.5c2.6 1 4.3 3 4.3 5.4 0 2-1.2 3.6-3 4.3"/><ellipse cx="24" cy="19.5" rx="5.2" ry="6"/><path d="M14 42c0-6.8 4.5-12 10-12s10 5.2 10 12"/><path d="M24 33v6"/><path d="M21.4 35.4h5.2"/></svg>',
+  priest: '<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="24" cy="14" r="6"/><path d="M13 42v-6.5c0-5.6 4.9-10.2 11-10.2s11 4.6 11 10.2V42"/><path d="M19.6 26.4L24 32l4.4-5.6"/><path d="M20 42V33"/><path d="M28 42V33"/><path d="M24 34.5V42"/><path d="M21.6 37h4.8"/></svg>',
+  bell: '<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M24 8c-6.6 0-11 5-11 12 0 6.6-1.4 10-3.4 12h28.8C36.4 30 35 26.6 35 20c0-7-4.4-12-11-12z"/><path d="M24 8V4.6"/><path d="M20.4 37c.5 2.3 1.9 3.6 3.6 3.6s3.1-1.3 3.6-3.6"/></svg>',
+};
+
 /* ---------- 六套配色 · 每次进来随机一套 ---------- */
 const THEMES = [
-  { name:"烛火",   icon:"🕯",  ground:"#090a11", stone:"#14161f", stone2:"#1c1f2b",
-    arch:"#2c3346", veil:"#8ea0e6", veilSoft:"#b6c2f2", sin:"#b52535", sinBright:"#d23a4a", candle:"#d8a94e" },
-  { name:"禅室",   icon:"🪷",  ground:"#0a0f0c", stone:"#131a15", stone2:"#1a231d",
-    arch:"#2c3b32", veil:"#7fae94", veilSoft:"#a9cfba", sin:"#8a6a2f", sinBright:"#b98d3e", candle:"#d9c184" },
-  { name:"木鱼",   icon:"🥁",  ground:"#100b07", stone:"#1a130d", stone2:"#241a11",
-    arch:"#3a2c1e", veil:"#b99a72", veilSoft:"#d8bd99", sin:"#8f4a24", sinBright:"#b8622f", candle:"#e0b063" },
-  { name:"蒲团",   icon:"🧘",  ground:"#0d0910", stone:"#171020", stone2:"#20172c",
-    arch:"#382a47", veil:"#a68ada", veilSoft:"#c7b3ea", sin:"#7d3a8f", sinBright:"#a04eb5", candle:"#dba9e6" },
-  { name:"深海",   icon:"🐚",  ground:"#060d12", stone:"#0d1720", stone2:"#132029",
-    arch:"#1f3543", veil:"#6aa9c4", veilSoft:"#9ccde2", sin:"#1f6b7a", sinBright:"#2b8b9c", candle:"#7fd4c9" },
-  { name:"晨钟",   icon:"🔔",  ground:"#100c09", stone:"#1b1611", stone2:"#251e17",
-    arch:"#3d3225", veil:"#c9a878", veilSoft:"#e3caa3", sin:"#a3542a", sinBright:"#c76c38", candle:"#f0c47a" },
+  { name:"奶油",   ground:"#faf7f2", stone:"#ffffff", stone2:"#f4efe7",
+    arch:"#e6ddd0", veil:"#a89478", veilSoft:"#8a7860", sin:"#c9a882", sinBright:"#b8926a", candle:"#d4b896", ink:"#4a453e" },
+  { name:"雾蓝",   ground:"#f2f5f8", stone:"#ffffff", stone2:"#eaeff5",
+    arch:"#d9e2ec", veil:"#8298ad", veilSoft:"#6b8095", sin:"#9fb5c9", sinBright:"#8399b0", candle:"#adc3d6", ink:"#3f4750" },
+  { name:"灰粉",   ground:"#faf5f4", stone:"#ffffff", stone2:"#f4e9e7",
+    arch:"#ecdcd9", veil:"#b08f8c", veilSoft:"#977674", sin:"#cfa8a4", sinBright:"#bd908c", candle:"#dcbcb8", ink:"#4c4240" },
+  { name:"鼠尾草", ground:"#f4f7f2", stone:"#ffffff", stone2:"#ebf0e7",
+    arch:"#dbe4d5", veil:"#87997e", veilSoft:"#6f8167", sin:"#a3b89a", sinBright:"#8ca382", candle:"#b8caaf", ink:"#414539" },
+  { name:"暖沙",   ground:"#f9f6f1", stone:"#ffffff", stone2:"#f2ebe0",
+    arch:"#e5d9c8", veil:"#a3937a", veilSoft:"#8a7a62", sin:"#c4ab88", sinBright:"#b09571", candle:"#d2be9e", ink:"#4a443a" },
+  { name:"藕荷",   ground:"#f7f5fa", stone:"#ffffff", stone2:"#efebf4",
+    arch:"#e2dbea", veil:"#9a8fab", veilSoft:"#827794", sin:"#b3a5c4", sinBright:"#9c8cb0", candle:"#c6bad4", ink:"#464151" },
 ];
 
 const LOADING_LINES = [
@@ -274,12 +297,17 @@ function applyTheme() {
   r.setProperty("--sin", t.sin);
   r.setProperty("--sin-bright", t.sinBright);
   r.setProperty("--candle", t.candle);
+  r.setProperty("--ink", t.ink);
+  r.setProperty("--muted", t.veilSoft);
+  r.setProperty("--parchment", t.ink);
   document.documentElement.style.background = t.ground;
   document.body.style.backgroundColor = t.ground;
+  const keys = Object.keys(ICONS);
+  const svg = ICONS[keys[Math.floor(Math.random() * keys.length)]];
   const halo = document.querySelector(".halo");
-  if (halo) { halo.textContent = t.icon; halo.classList.add("has-icon"); }
+  if (halo) { halo.innerHTML = svg; halo.classList.add("has-icon"); }
   const gate = document.getElementById("gateIcon");
-  if (gate) gate.textContent = t.icon;
+  if (gate) gate.innerHTML = svg;
   return t;
 }
 const CURRENT_THEME = applyTheme();

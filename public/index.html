@@ -10,7 +10,7 @@
 <style>
   /* 2026-07-27 补：微信等内置浏览器会自作主张改配色，把深色背景吃掉，
      白字浮在白底上就看不见了。这里 html+body 双保险硬设，并锁 color-scheme。 */
-  html{background:#faf7f2;color-scheme:light;}
+  html{background:#f2e9db;color-scheme:light;transition:background .3s;}
   body{background-color:var(--ground);}
   :root{
     --ground:#090a11;--stone:#14161f;--stone-2:#1c1f2b;--arch:#2c3346;
@@ -42,9 +42,11 @@
       radial-gradient(70% 50% at 50% 118%, rgba(181,37,53,.10), transparent 60%),var(--ground);
     color:var(--ink);font-family:var(--font-cjk);line-height:1.72;
     -webkit-font-smoothing:antialiased;display:flex;justify-content:center;padding:clamp(14px,4vw,44px);}
-  .chapel{width:100%;max-width:640px;background:linear-gradient(180deg,var(--stone-2),var(--stone));
+  .chapel{position:relative;width:100%;max-width:640px;background:linear-gradient(180deg,var(--stone-2),var(--stone));
     border:1px solid var(--hair);border-radius:24px;
     box-shadow:0 18px 50px -22px rgba(90,80,70,.2);overflow:hidden;}
+  .chapel::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;z-index:2;
+    background:linear-gradient(90deg,var(--sin),var(--candle),var(--veil));}
 
   header{position:relative;padding:36px 28px 24px;text-align:center;border-bottom:1px solid var(--hair)}
   .halo{width:60px;height:60px;margin:0 auto 14px;position:relative;}
@@ -101,9 +103,11 @@
   @media (prefers-reduced-motion:reduce){.halo::after{animation:none}.fill{transition:none}.flash{animation:none}}
 
 /* ===== 首屏 / 加载 / 广告条：公版 CSS 之外新增的部分 ===== */
-.gate{width:100%;max-width:520px;margin:0 auto;padding:52px 30px 42px;text-align:center;
+.gate{position:relative;overflow:hidden;width:100%;max-width:520px;margin:0 auto;padding:52px 30px 42px;text-align:center;
   background:var(--stone);border:1px solid var(--arch);
   border-radius:24px;box-shadow:0 18px 50px -22px rgba(90,80,70,.22);}
+.gate::before{content:"";position:absolute;top:0;left:0;right:0;height:4px;
+  background:linear-gradient(90deg,var(--sin),var(--candle),var(--veil));}
 .gate-icon{width:48px;height:48px;margin:0 auto 18px;color:var(--veil);opacity:1}
 .gate-icon svg{width:100%;height:100%;display:block}
 .halo.has-icon{display:flex;align-items:center;justify-content:center;color:var(--veil);opacity:.85}
@@ -262,18 +266,19 @@ const ICONS = {
 
 /* ---------- 六套配色 · 每次进来随机一套 ---------- */
 const THEMES = [
-  { name:"奶油",   ground:"#faf7f2", stone:"#ffffff", stone2:"#f4efe7",
-    arch:"#e6ddd0", veil:"#a89478", veilSoft:"#8a7860", sin:"#c9a882", sinBright:"#b8926a", candle:"#d4b896", ink:"#4a453e" },
-  { name:"雾蓝",   ground:"#f2f5f8", stone:"#ffffff", stone2:"#eaeff5",
-    arch:"#d9e2ec", veil:"#8298ad", veilSoft:"#6b8095", sin:"#9fb5c9", sinBright:"#8399b0", candle:"#adc3d6", ink:"#3f4750" },
-  { name:"灰粉",   ground:"#faf5f4", stone:"#ffffff", stone2:"#f4e9e7",
-    arch:"#ecdcd9", veil:"#b08f8c", veilSoft:"#977674", sin:"#cfa8a4", sinBright:"#bd908c", candle:"#dcbcb8", ink:"#4c4240" },
-  { name:"鼠尾草", ground:"#f4f7f2", stone:"#ffffff", stone2:"#ebf0e7",
-    arch:"#dbe4d5", veil:"#87997e", veilSoft:"#6f8167", sin:"#a3b89a", sinBright:"#8ca382", candle:"#b8caaf", ink:"#414539" },
-  { name:"暖沙",   ground:"#f9f6f1", stone:"#ffffff", stone2:"#f2ebe0",
-    arch:"#e5d9c8", veil:"#a3937a", veilSoft:"#8a7a62", sin:"#c4ab88", sinBright:"#b09571", candle:"#d2be9e", ink:"#4a443a" },
-  { name:"藕荷",   ground:"#f7f5fa", stone:"#ffffff", stone2:"#efebf4",
-    arch:"#e2dbea", veil:"#9a8fab", veilSoft:"#827794", sin:"#b3a5c4", sinBright:"#9c8cb0", candle:"#c6bad4", ink:"#464151" },
+  // 每套三层：ground 页面底 / stone 卡片 / stone-2 卡片内的块，同色系里拉开深浅
+  { name:"奶油",   ground:"#f2e9db", stone:"#fdf9f3", stone2:"#ebdec9",
+    arch:"#ddc9ae", veil:"#a8865c", veilSoft:"#8d7048", sin:"#c08552", sinBright:"#a86f3f", candle:"#d9b98c", ink:"#4a3f33" },
+  { name:"雾蓝",   ground:"#e6edf3", stone:"#f9fbfd", stone2:"#d9e5ef",
+    arch:"#c2d3e2", veil:"#6b8fae", veilSoft:"#587a97", sin:"#7ca0bd", sinBright:"#628aa9", candle:"#a3c1d9", ink:"#33414d" },
+  { name:"灰粉",   ground:"#f2e6e4", stone:"#fdf8f7", stone2:"#ead6d3",
+    arch:"#dcc2be", veil:"#a87d78", veilSoft:"#8f6763", sin:"#c08d87", sinBright:"#a97570", candle:"#d9aca6", ink:"#4d3d3a" },
+  { name:"鼠尾草", ground:"#e8eee4", stone:"#f9fbf7", stone2:"#dbe5d4",
+    arch:"#c6d4bd", veil:"#718a63", veilSoft:"#5d7450", sin:"#8aa47b", sinBright:"#728c64", candle:"#a9c19a", ink:"#3b4435" },
+  { name:"暖沙",   ground:"#f0e7d9", stone:"#fdfaf5", stone2:"#e7d9c3",
+    arch:"#d6c3a6", veil:"#9a7e56", veilSoft:"#7f6644", sin:"#b09268", sinBright:"#977a53", candle:"#ccb28c", ink:"#473f33" },
+  { name:"藕荷",   ground:"#ebe6f0", stone:"#fbf9fd", stone2:"#e1d9eb",
+    arch:"#cec3dc", veil:"#83729d", veilSoft:"#6d5d86", sin:"#9a89b3", sinBright:"#83729d", candle:"#b8a9cc", ink:"#443c52" },
 ];
 
 const LOADING_LINES = [

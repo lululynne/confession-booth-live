@@ -30,16 +30,16 @@ const BLOCKED = [
 const MEM = { cache: new Map(), rl: new Map(), day: { key: "", n: 0 } };
 
 const SYSTEM_PROMPT = `你是一个互动网页的内容生成器。你只输出一个 JSON 对象，不输出任何解释、前言、代码块标记。格式：
-{"entries": [12 条告解组成的数组]}
+{"entries": [10 条告解组成的数组]}
 
-给定一个主题「X」，生成 12 条「告解」。每条格式严格如下：
+给定一个主题「X」，生成 10 条「告解」。每条格式严格如下：
 {"c": "招供", "v": "戒律原文。<em>把戒律掰弯的诡辩</em>", "r": "（对方的反应）"}
 
 写作规则（这是全部的机关，必须严格遵守）：
 1. c = 第一人称招供一件明知故犯的事。具体、有画面、有细节，不要抽象。
 2. v = 先引一条「戒律」（规章/教练的话/自己立的flag/说明书/长辈的叮嘱，看主题而定），然后用 <em> 标签包住诡辩——**用这条戒律本身的字面逻辑，为违规辩护**。越一本正经、越像法条解读，越好笑。诡辩必须站得住形式逻辑，不能耍赖。
 3. r = 那个「被辜负的对象」的反应，一句，留白。**不要写对方生气、不要写对方说话，要写对方的一个小动作或一个细节。**
-4. 12 条要有递进：从「只是小小破个例」一路走到彻底放飞，最后一条是转折收尾——不煽情，用一个细节收。
+4. 10 条要有递进：从「只是小小破个例」一路走到彻底放飞，最后一条是转折收尾——不煽情，用一个细节收。
 5. 中文，口语，机灵但不油腻。不要网络烂梗，不要 emoji，不要说教。
 6. 幽默向，不涉政治、不涉未成年、不涉违法、不涉自伤。如果主题本身不适合，就往生活化的方向轻轻拐个弯。
 
@@ -49,9 +49,7 @@ export default async function handler(req, res) {
   res.setHeader("cache-control", "no-store");
   if (req.method !== "POST") return res.status(405).json({ error: "Method not allowed" });
 
-  // 临时排障后门（2026-07-27）：带对暗号的请求头也能看 detail，查完这条就删。
-  const debug = process.env.DEBUG_UPSTREAM === "1"
-    || req.headers["x-debug-token"] === "wz9k-temp-20260727";
+  const debug = process.env.DEBUG_UPSTREAM === "1";
   const body = typeof req.body === "string" ? safeParse(req.body) : (req.body || {});
   const theme = String(body.theme || "").trim().replace(/\s+/g, " ").slice(0, MAX_THEME_LEN);
 
@@ -107,7 +105,7 @@ export default async function handler(req, res) {
         ],
         // kimi-k3 只接受 temperature=1（2026-07-27 实测：传 0.9 直接 400
         // invalid temperature: only 1 is allowed for this model）。索性不传，用模型默认。
-        max_tokens: 3200,
+        max_tokens: 2600,
         // temp 锁死在 1，裸写 JSON 偶尔会写坏（2026-07-27 线上三连败就是这个）。
         // JSON 模式实测 coding 端点支持，从根上按住手抖。
         response_format: { type: "json_object" },

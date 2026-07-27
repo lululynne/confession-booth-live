@@ -48,7 +48,9 @@ export default async function handler(req, res) {
   res.setHeader("cache-control", "no-store");
   if (req.method !== "POST") return res.status(405).json({ error: "Method not allowed" });
 
-  const debug = process.env.DEBUG_UPSTREAM === "1";
+  // 临时排障后门（2026-07-27）：带对暗号的请求头也能看 detail，查完这条就删。
+  const debug = process.env.DEBUG_UPSTREAM === "1"
+    || req.headers["x-debug-token"] === "wz9k-temp-20260727";
   const body = typeof req.body === "string" ? safeParse(req.body) : (req.body || {});
   const theme = String(body.theme || "").trim().replace(/\s+/g, " ").slice(0, MAX_THEME_LEN);
 

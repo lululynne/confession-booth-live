@@ -29,7 +29,8 @@ const BLOCKED = [
 // 内存态（同实例内有效）。将来接 KV 就替换这里。
 const MEM = { cache: new Map(), rl: new Map(), day: { key: "", n: 0 } };
 
-const SYSTEM_PROMPT = `你是一个互动网页的内容生成器。你只输出 JSON 数组，不输出任何解释、前言、代码块标记。
+const SYSTEM_PROMPT = `你是一个互动网页的内容生成器。你只输出一个 JSON 对象，不输出任何解释、前言、代码块标记。格式：
+{"entries": [12 条告解组成的数组]}
 
 给定一个主题「X」，生成 12 条「告解」。每条格式严格如下：
 {"c": "招供", "v": "戒律原文。<em>把戒律掰弯的诡辩</em>", "r": "（对方的反应）"}
@@ -42,7 +43,7 @@ const SYSTEM_PROMPT = `你是一个互动网页的内容生成器。你只输出
 5. 中文，口语，机灵但不油腻。不要网络烂梗，不要 emoji，不要说教。
 6. 幽默向，不涉政治、不涉未成年、不涉违法、不涉自伤。如果主题本身不适合，就往生活化的方向轻轻拐个弯。
 
-只输出 JSON 数组，第一个字符必须是 [，最后一个字符必须是 ]。`;
+只输出 JSON 对象 {"entries": [...]}，第一个字符必须是 {，最后一个字符必须是 }。`;
 
 export default async function handler(req, res) {
   res.setHeader("cache-control", "no-store");
@@ -107,6 +108,9 @@ export default async function handler(req, res) {
         // kimi-k3 只接受 temperature=1（2026-07-27 实测：传 0.9 直接 400
         // invalid temperature: only 1 is allowed for this model）。索性不传，用模型默认。
         max_tokens: 3200,
+        // temp 锁死在 1，裸写 JSON 偶尔会写坏（2026-07-27 线上三连败就是这个）。
+        // JSON 模式实测 coding 端点支持，从根上按住手抖。
+        response_format: { type: "json_object" },
       }),
     });
     rawText = await upstream.text();
@@ -135,11 +139,27 @@ export default async function handler(req, res) {
     });
   }
 
-  let entries;
+  // 解析三级梯子：JSON 模式整体解析 → 抠数组 → 逐条打捞。
+  // temp 锁死在 1 时模型偶尔写坏一条，不能让一条坏的拖死整锅。
+  let entries = null;
   try {
-    const m = text.match(/\[[\s\S]*\]/);
-    entries = JSON.parse(m ? m[0] : text);
-  } catch {
+    const obj = JSON.parse(text);
+    entries = Array.isArray(obj) ? obj : obj.entries;
+  } catch {}
+  if (!Array.isArray(entries)) {
+    try {
+      const m = text.match(/\[[\s\S]*\]/);
+      if (m) entries = JSON.parse(m[0]);
+    } catch {}
+  }
+  if (!Array.isArray(entries)) {
+    entries = [];
+    const one = /\{\s*"c"\s*:\s*"(?:[^"\\]|\\.)*"\s*,\s*"v"\s*:\s*"(?:[^"\\]|\\.)*"\s*,\s*"r"\s*:\s*"(?:[^"\\]|\\.)*"\s*\}/g;
+    for (const m of text.match(one) || []) {
+      try { entries.push(JSON.parse(m)); } catch {}
+    }
+  }
+  if (!entries.length) {
     return res.status(502).json({
       error: "生成的内容格式不对，再试一次通常就好了。",
       detail: debug ? text.slice(0, 300) : undefined,
